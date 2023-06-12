@@ -2,17 +2,20 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"net"
 
 	pb "example.com/m/gen/go/your/service/v1"
 
 	"flag"
-	"net/http"
-  
+	// "net/http"
+
 	"github.com/golang/glog"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	// "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
+	// "google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/reflection"
 )
 
 var (
@@ -32,21 +35,47 @@ func (server) Echo(ctx context.Context, msg *pb.StringMessage) (*pb.StringMessag
 }
 
 func run() error {
-	ctx := context.Background()
-	ctx, cancel := context.WithCancel(ctx)
-	defer cancel()
+	// ctx := context.Background()
+	// ctx, cancel := context.WithCancel(ctx)
+	// defer cancel()
 
-	// Register gRPC server endpoint
-	// Note: Make sure the gRPC server is running properly and accessible
-	mux := runtime.NewServeMux()
-	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	err := pb.RegisterYourServiceHandlerFromEndpoint(ctx, mux,  *grpcServerEndpoint, opts)
+	// // Register reflection service on gRPC server.
+	// reflection.Register(s)
+
+	// // Register gRPC server endpoint
+	// // Note: Make sure the gRPC server is running properly and accessible
+	// mux := runtime.NewServeMux()
+	// opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
+	// err := pb.RegisterYourServiceHandlerFromEndpoint(ctx, mux,  *grpcServerEndpoint, opts)
+	// if err != nil {
+	// 	return err
+	// }
+
+	// // Start HTTP server (and proxy calls to gRPC server endpoint)
+	// return http.ListenAndServe(":8081", mux)
+
+
+	flag.Parse()
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 9090))
 	if err != nil {
-		return err
+		log.Fatalf("failed to listen: %v", err)
 	}
+	fmt.Printf("server listening at %v\n", lis.Addr())
 
-	// Start HTTP server (and proxy calls to gRPC server endpoint)
-	return http.ListenAndServe(":8081", mux)
+	s := grpc.NewServer()
+
+	// Register Greeter on the server.
+	pb.RegisterYourServiceServer(s, &server{})
+
+	// Register reflection service on gRPC server.
+	reflection.Register(s)
+
+	// go func() {}
+	fmt.Println("start server")
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
+	return nil
 }
 
 func main() {
