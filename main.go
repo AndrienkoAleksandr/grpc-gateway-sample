@@ -5,8 +5,6 @@ import (
 	"log"
 
 	pb "example.com/m/gen/go/your/service/v1"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 // server is used to implement helloworld.GreeterServer.
