@@ -13,7 +13,7 @@ type server struct {
 }
 
 func (server) Echo(ctx context.Context, msg *pb.StringMessage) (*pb.StringMessage, error) {
-	log.Printf("Echo: ", msg.Value)
+	log.Printf("Echo: %s", msg.Value)
 	return msg, nil
 }
 
