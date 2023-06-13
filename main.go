@@ -110,9 +110,9 @@ func main() {
 	defer glog.Flush()
 
 	serverCred := loadTlsServerCert()
-	clientCred := loadTlsClientCert()
-
 	runGrpcService(serverCred)
+
+	clientCred := loadTlsClientCert()
 	if err := runGateWayProxy(clientCred); err != nil {
 		glog.Fatal(err)
 	}
