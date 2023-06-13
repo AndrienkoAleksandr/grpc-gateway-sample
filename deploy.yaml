@@ -20,7 +20,7 @@ spec:
           image: docker.io/aandrienko/grpc-gateway
           args:
           - -grpc-server-endpoint
-          - tekton-results-api-service.oandriie-tenant.svc.cluster.local:50051
+          - grpc-gateway-sample-2.oandriie-tenant.svc.cluster.local:50051
           resources:
             requests:
               memory: "10Mi"
@@ -37,8 +37,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    service.beta.openshift.io/serving-cert-secret-name: tekton-results-tls
+  # annotations:
+  #   service.beta.openshift.io/serving-cert-secret-name: tekton-results-tls-none
   labels:
     app.kubernetes.io/part-of: grpc-gateway-sample
     app.kubernetes.io/version: devel
