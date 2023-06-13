@@ -21,7 +21,7 @@ import (
 var (
 	// command-line options:
 	// gRPC server endpoint
-	grpcServerEndpoint = flag.String("grpc-server-endpoint",  "localhost:9090", "gRPC server endpoint")
+	grpcServerEndpoint = flag.String("grpc-server-endpoint",  "localhost:50051", "gRPC server endpoint")
 )
 
 // server is used to implement helloworld.GreeterServer.
@@ -55,7 +55,7 @@ func runGateWayProxy() error {
 
 func runGrpcService() {
 	// todo hardcode port
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 9090))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 50051))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
