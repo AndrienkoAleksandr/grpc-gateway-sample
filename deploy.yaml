@@ -69,7 +69,7 @@ spec:
   path: /
   to:
     kind: Service
-    name: grpc-gateway-sample
+    name: grpc-gateway-sample-2
     weight: 100
   port:
     # tekton-results now supports both REST and gRPC traffic on same port
