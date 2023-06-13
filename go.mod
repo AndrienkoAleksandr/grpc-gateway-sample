@@ -3,6 +3,7 @@ module example.com/m
 go 1.20
 
 require (
+	github.com/golang/glog v1.1.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.0
 	google.golang.org/grpc v1.55.0
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.3.0
@@ -10,7 +11,6 @@ require (
 )
 
 require (
-	github.com/golang/glog v1.1.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.10.0 // indirect

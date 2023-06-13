@@ -50,7 +50,7 @@ func runGateWayProxy() error {
 
 	fmt.Println("Run gRPC gateway...")
 	// Start HTTP server (and proxy calls to gRPC server endpoint)
-	return http.ListenAndServe(":8081", mux)
+	return http.ListenAndServe(":3001", mux)
 }
 
 func runGrpcService() {

@@ -7,5 +7,5 @@ echo "=> grpc_cli for gRPC servcie"
 grpc_cli call localhost:9090  your.service.v1.YourService.Echo 'value: "test"'
 
 echo "=> curl gRPC gateway"
-curl -X POST localhost:8081/your.service.v1.YourService/Echo -d '{"value": "echo"}'
+curl -X POST localhost:3001/your.service.v1.YourService/Echo -d '{"value": "echo"}'
 echo

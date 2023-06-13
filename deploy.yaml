@@ -1,0 +1,232 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: my-nodejs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejs-app
+      app.kubernetes.io/name: tekton-results-api-10
+  template:
+    metadata:
+      labels:
+        app: nodejs-app
+        app.kubernetes.io/name: tekton-results-api-10
+    spec:
+      containers:
+        - name: my-nodejs
+          # image: docker.io/aandrienko/tekton-api
+          image: docker.io/aandrienko/grpc-gateway
+          # args:
+          #   - -api_addr
+          #   - tekton-results-api-service.oandriie-tenant.svc.cluster.local:50051
+          #   - -auth_mode
+          #   - token
+          env:
+            - name: DB_HOST
+              value: tekton-results-postgres-service.oandriie-tenant.svc.cluster.local
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_USER
+                  name: tekton-results-postgres
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: tekton-results-postgres
+            - name: DB_NAME
+              value: tekton-results
+          resources:
+            requests:
+              memory: "50Mi"
+              cpu: "10m"
+          volumeMounts:
+            - mountPath: /etc/tekton/results
+              name: config
+              readOnly: true
+            - mountPath: /etc/tls
+              name: tls
+              readOnly: true
+      volumes:
+        - configMap:
+            name: tekton-results-api-config
+          name: config
+        - name: tls
+          secret:
+            secretName: tekton-results-tls
+---
+apiVersion: v1
+data:
+  config: |-
+    DB_USER=
+    DB_PASSWORD=
+    DB_HOST=
+    DB_PORT=5432
+    DB_NAME=
+    DB_SSLMODE=disable
+    DB_ENABLE_AUTO_MIGRATION=true
+    GRPC_PORT=50051
+    REST_PORT=3001
+    PROMETHEUS_PORT=9090
+    TLS_HOSTNAME_OVERRIDE=
+    TLS_PATH=/etc/tls
+    NO_AUTH=false
+    LOG_LEVEL=info
+    LOGS_API=false
+    LOGS_TYPE=File
+    LOGS_BUFFER_SIZE=32768
+    LOGS_PATH=/logs
+    S3_BUCKET_NAME=
+    S3_ENDPOINT=
+    S3_HOSTNAME_IMMUTABLE=false
+    S3_REGION=
+    S3_ACCESS_KEY_ID=
+    S3_SECRET_ACCESS_KEY=
+    S3_MULTI_PART_SIZE=5242880
+kind: ConfigMap
+metadata:
+  name: tekton-results-api-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: tekton-results-postgres
+    app.kubernetes.io/part-of: tekton-results
+    app.kubernetes.io/version: devel
+  name: tekton-results-postgres-service
+spec:
+  ports:
+  - name: postgres
+    port: 5432
+  selector:
+    app.kubernetes.io/name: tekton-results-postgres
+  type: NodePort
+---
+apiVersion: v1
+data:
+  POSTGRES_DB: tekton-results
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: tekton-results-postgres
+    app.kubernetes.io/part-of: tekton-results
+    app.kubernetes.io/version: devel
+  name: tekton-results-postgres
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tekton-results-postgres
+type: Opaque
+data:
+  POSTGRES_USER: YWRtaW4=
+  POSTGRES_PASSWORD: YWRtaW4=
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/name: tekton-results-postgres
+    app.kubernetes.io/part-of: tekton-results
+    app.kubernetes.io/version: devel
+  name: tekton-results-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: tekton-results-postgres
+  serviceName: postgres
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: tekton-results-postgres
+        app.kubernetes.io/version: devel
+    spec:
+      containers:
+      - name: postgres
+        env: 
+          - name: PGDATA
+            value: /bitnami/postgresql/data
+        envFrom:
+        - configMapRef:
+            name: tekton-results-postgres
+        - secretRef:
+            name: tekton-results-postgres
+        image: docker.io/bitnami/postgresql:13.10.0
+        ports:
+        - containerPort: 5432
+          name: postgredb
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
+            drop:
+            - ALL
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /bitnami/postgresql
+          name: postgredb
+  volumeClaimTemplates:
+  - metadata:
+      name: postgredb
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.openshift.io/serving-cert-secret-name: tekton-results-tls
+  labels:
+    app.kubernetes.io/part-of: tekton-results
+    app.kubernetes.io/version: devel
+  name: tekton-results-api-service
+spec:
+  ports:
+  # - name: grpc
+  #   port: 50051
+  #   protocol: TCP
+  #   targetPort: 50051
+  - name: http-3001
+    port: 3001
+    protocol: TCP
+    targetPort: 3001
+  # - name: prometheus
+  #   port: 9090
+  #   protocol: TCP
+  #   targetPort: 9090
+  selector:
+    app.kubernetes.io/name: tekton-results-api-10
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: tekton-results
+  labels:
+    app.kubernetes.io/part-of: tekton-results
+  annotations:
+    openshift.io/host.generated: "true"
+    haproxy.router.openshift.io/hsts_header: "max-age=63072000"
+spec:
+  to:
+    kind: Service
+    name: tekton-results-api-service
+    weight: 100
+  port:
+    # tekton-results now supports both REST and gRPC traffic on same port
+    targetPort: http-3001
+  # tls:
+  #   termination: reencrypt
+  #   insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
