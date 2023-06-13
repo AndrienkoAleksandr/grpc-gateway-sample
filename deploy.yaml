@@ -50,31 +50,27 @@ spec:
     port: 3001
     protocol: TCP
     targetPort: 3001
-  # - name: prometheus
-  #   port: 9090
-  #   protocol: TCP
-  #   targetPort: 9090
   selector:
     app.kubernetes.io/name: tekton-results-api-12
----
-kind: Route
-apiVersion: route.openshift.io/v1
-metadata:
-  name: tekton-results
-  labels:
-    app.kubernetes.io/part-of: tekton-results
-  annotations:
-    openshift.io/host.generated: "true"
-    haproxy.router.openshift.io/hsts_header: "max-age=63072000"
-spec:
-  to:
-    kind: Service
-    name: tekton-results-api-service
-    weight: 100
-  port:
-    # tekton-results now supports both REST and gRPC traffic on same port
-    targetPort: http-3001
-  # tls:
-  #   termination: reencrypt
-  #   insecureEdgeTerminationPolicy: Redirect
-  wildcardPolicy: None
+# ---
+# kind: Route
+# apiVersion: route.openshift.io/v1
+# metadata:
+#   name: tekton-results
+#   labels:
+#     app.kubernetes.io/part-of: tekton-results
+#   annotations:
+#     openshift.io/host.generated: "true"
+#     haproxy.router.openshift.io/hsts_header: "max-age=63072000"
+# spec:
+#   to:
+#     kind: Service
+#     name: tekton-results-api-service
+#     weight: 100
+#   port:
+#     # tekton-results now supports both REST and gRPC traffic on same port
+#     targetPort: http-3001
+#   # tls:
+#   #   termination: reencrypt
+#   #   insecureEdgeTerminationPolicy: Redirect
+#   wildcardPolicy: None
