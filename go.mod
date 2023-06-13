@@ -23,6 +23,3 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace (
-	golang.org/x/net => golang.org/x/net v0.11.0
-)
