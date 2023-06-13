@@ -8,12 +8,12 @@ spec:
   selector:
     matchLabels:
       app: nodejs-app
-      app.kubernetes.io/name: tekton-results-api-12
+      app.kubernetes.io/name: tekton-results-api-13
   template:
     metadata:
       labels:
         app: nodejs-app
-        app.kubernetes.io/name: tekton-results-api-12
+        app.kubernetes.io/name: tekton-results-api-13
     spec:
       containers:
         - name: my-nodejs
@@ -37,7 +37,7 @@ metadata:
   annotations:
     service.beta.openshift.io/serving-cert-secret-name: tekton-results-tls
   labels:
-    app.kubernetes.io/part-of: tekton-results
+    app.kubernetes.io/part-of: grpc-gateway-sample
     app.kubernetes.io/version: devel
   name: tekton-results-api-service
 spec:
@@ -51,26 +51,27 @@ spec:
     protocol: TCP
     targetPort: 3001
   selector:
-    app.kubernetes.io/name: tekton-results-api-12
-# ---
-# kind: Route
-# apiVersion: route.openshift.io/v1
-# metadata:
-#   name: tekton-results
-#   labels:
-#     app.kubernetes.io/part-of: tekton-results
-#   annotations:
-#     openshift.io/host.generated: "true"
-#     haproxy.router.openshift.io/hsts_header: "max-age=63072000"
-# spec:
-#   to:
-#     kind: Service
-#     name: tekton-results-api-service
-#     weight: 100
-#   port:
-#     # tekton-results now supports both REST and gRPC traffic on same port
-#     targetPort: http-3001
-#   # tls:
-#   #   termination: reencrypt
-#   #   insecureEdgeTerminationPolicy: Redirect
-#   wildcardPolicy: None
+    app.kubernetes.io/name: tekton-results-api-13
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: tekton-results
+  labels:
+    app.kubernetes.io/part-of: grpc-gateway-sample
+  annotations:
+    openshift.io/host.generated: "true"
+    haproxy.router.openshift.io/hsts_header: "max-age=63072000"
+spec:
+  path: /
+  to:
+    kind: Service
+    name: tekton-results-api-service
+    weight: 100
+  port:
+    # tekton-results now supports both REST and gRPC traffic on same port
+    targetPort: http-3001
+  # tls:
+  #   termination: reencrypt
+  #   insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
