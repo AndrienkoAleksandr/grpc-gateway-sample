@@ -1,6 +1,6 @@
 module example.com/m
 
-go 1.20
+go 1.18
 
 require (
 	github.com/golang/glog v1.1.0
@@ -22,4 +22,3 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230530153820-e85fd2cbaebc // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-

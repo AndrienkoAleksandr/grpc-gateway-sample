@@ -9,6 +9,7 @@ COPY go.sum go.sum
 COPY gen/ gen/
 COPY your/ your/
 COPY tools/ tools/
+COPY vendor/ vendor/
 COPY main.go main.go
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -mod=vendor -a -o api main.go
