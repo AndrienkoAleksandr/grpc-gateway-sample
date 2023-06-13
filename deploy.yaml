@@ -8,12 +8,12 @@ spec:
   selector:
     matchLabels:
       app: nodejs-app
-      app.kubernetes.io/name: tekton-results-api-13
+      app.kubernetes.io/name: tekton-results-api-14
   template:
     metadata:
       labels:
         app: nodejs-app
-        app.kubernetes.io/name: tekton-results-api-13
+        app.kubernetes.io/name: tekton-results-api-14
     spec:
       containers:
         - name: my-nodejs
@@ -54,7 +54,7 @@ spec:
     protocol: TCP
     targetPort: 3001
   selector:
-    app.kubernetes.io/name: tekton-results-api-13
+    app.kubernetes.io/name: tekton-results-api-14
 ---
 kind: Route
 apiVersion: route.openshift.io/v1
