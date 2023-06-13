@@ -18,6 +18,9 @@ spec:
       containers:
         - name: my-nodejs
           image: docker.io/aandrienko/grpc-gateway
+          args:
+          - -grpc-server-endpoint
+          - tekton-results-api-service.oandriie-tenant.svc.cluster.local:50051
           resources:
             requests:
               memory: "10Mi"
@@ -71,7 +74,7 @@ spec:
   port:
     # tekton-results now supports both REST and gRPC traffic on same port
     targetPort: http-3001
-  # tls:
-  #   termination: reencrypt
-  #   insecureEdgeTerminationPolicy: Redirect
+  tls:
+    termination: reencrypt
+    insecureEdgeTerminationPolicy: Redirect
   wildcardPolicy: None

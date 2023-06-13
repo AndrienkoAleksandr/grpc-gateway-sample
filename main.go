@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"path"
 
 	pb "example.com/m/gen/go/your/service/v1"
 
@@ -14,6 +15,7 @@ import (
 	"github.com/golang/glog"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
 )
@@ -22,6 +24,10 @@ var (
 	// command-line options:
 	// gRPC server endpoint
 	grpcServerEndpoint = flag.String("grpc-server-endpoint",  "localhost:50051", "gRPC server endpoint")
+)
+
+const (
+	tlsPath = "/etc/tls"
 )
 
 // server is used to implement helloworld.GreeterServer.
@@ -34,7 +40,7 @@ func (server) Echo(ctx context.Context, msg *pb.StringMessage) (*pb.StringMessag
 	return msg, nil
 }
 
-func runGateWayProxy() error {
+func runGateWayProxy(cred credentials.TransportCredentials) error {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
@@ -42,7 +48,8 @@ func runGateWayProxy() error {
 	// Register gRPC server endpoint
 	// Note: Make sure the gRPC server is running properly and accessible
 	mux := runtime.NewServeMux()
-	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
+	opts := []grpc.DialOption{grpc.WithTransportCredentials(cred)}
+	fmt.Println("Gateway proxy will connect to: " + *grpcServerEndpoint)
 	err := pb.RegisterYourServiceHandlerFromEndpoint(ctx, mux,  *grpcServerEndpoint, opts)
 	if err != nil {
 		return err
@@ -50,10 +57,10 @@ func runGateWayProxy() error {
 
 	fmt.Println("Run gRPC gateway...")
 	// Start HTTP server (and proxy calls to gRPC server endpoint)
-	return http.ListenAndServe(":3001", mux)
+	return http.ListenAndServeTLS(":3001", path.Join(tlsPath, "tls.crt"), path.Join(tlsPath, "tls.key"), mux)
 }
 
-func runGrpcService() {
+func runGrpcService(cred credentials.TransportCredentials) {
 	// todo hardcode port
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 50051))
 	if err != nil {
@@ -61,7 +68,7 @@ func runGrpcService() {
 	}
 	fmt.Printf("server listening at %v\n", lis.Addr())
 
-	s := grpc.NewServer()
+	s := grpc.NewServer(grpc.Creds(cred))
 
 	// Register Greeter on the server.
 	pb.RegisterYourServiceServer(s, &server{})
@@ -77,12 +84,36 @@ func runGrpcService() {
 	}()
 }
 
+func loadTlsServerCert() credentials.TransportCredentials {
+	fmt.Println("Load server certificates")
+	// Load TLS cert for server
+	creds, tlsError := credentials.NewServerTLSFromFile(path.Join(tlsPath, "tls.crt"), path.Join(tlsPath, "tls.key", ""))
+	if tlsError != nil {
+		fmt.Printf("Error loading TLS key pair for server: %v", tlsError)
+		fmt.Printf("Creating server without TLS")
+		creds = insecure.NewCredentials()
+	}
+	return creds
+}
+
+func loadTlsClientCert() credentials.TransportCredentials {
+	fmt.Println("Load client certificates")
+	creds, err := credentials.NewClientTLSFromFile(path.Join(tlsPath, "tls.crt"), "")
+	if err != nil {
+		log.Fatalf("Error loading TLS certificate for REST: %v", err)
+	}
+	return creds
+}
+
 func main() {
 	flag.Parse()
 	defer glog.Flush()
 
-	runGrpcService()
-	if err := runGateWayProxy(); err != nil {
+	serverCred := loadTlsServerCert()
+	clientCred := loadTlsClientCert()
+
+	runGrpcService(serverCred)
+	if err := runGateWayProxy(clientCred); err != nil {
 		glog.Fatal(err)
 	}
 }
