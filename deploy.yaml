@@ -54,7 +54,7 @@ spec:
     protocol: TCP
     targetPort: 3001
   selector:
-    app.kubernetes.io/name: tekton-results-api-14
+    app.kubernetes.io/name: none
 ---
 kind: Route
 apiVersion: route.openshift.io/v1
