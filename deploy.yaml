@@ -29,6 +29,7 @@ spec:
             - mountPath: /etc/tls
               name: tls
               readOnly: true
+      imagePullPolicy: Always
       volumes:
         - name: tls
           secret:
