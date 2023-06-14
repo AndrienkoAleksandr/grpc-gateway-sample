@@ -108,6 +108,7 @@ func loadTlsClientCert() credentials.TransportCredentials {
 func main() {
 	flag.Parse()
 	defer glog.Flush()
+	fmt.Println("=== 0 ===")
 
 	serverCred := loadTlsServerCert()
 	runGrpcService(serverCred)
