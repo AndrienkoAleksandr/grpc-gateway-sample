@@ -11,6 +11,7 @@ require (
 )
 
 require (
+	github.com/AndrienkoAleksandr/net v0.0.0-20230619112913-18063360ee2d // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.10.0 // indirect
@@ -23,4 +24,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace golang.org/x/net => github.com/AndrienkoAleksandr/net v0.0.0-20230615114718-6390b7b20261
+replace golang.org/x/net => github.com/AndrienkoAleksandr/net v0.0.0-20230619121241-05e763507259

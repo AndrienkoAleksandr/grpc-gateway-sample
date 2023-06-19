@@ -1,5 +1,7 @@
-github.com/AndrienkoAleksandr/net v0.0.0-20230615114718-6390b7b20261 h1:tMLX/ABBRqU8d1z7p9lYWLp/B8PBd/VihKG7bEBXKYg=
-github.com/AndrienkoAleksandr/net v0.0.0-20230615114718-6390b7b20261/go.mod h1:2L/ixqYpgIVXmeoSA/4Lu7BzTG4KIyPIryS4IsOd1oQ=
+github.com/AndrienkoAleksandr/net v0.0.0-20230619112913-18063360ee2d h1:UCjBgIR5mLINiZ7BoqlazSmaJjqD2KLU4RN7Y/NgJqw=
+github.com/AndrienkoAleksandr/net v0.0.0-20230619112913-18063360ee2d/go.mod h1:9gsrO9mJLBdC0MHoRJlotoBRBbfatuyHGhIikdn/yIA=
+github.com/AndrienkoAleksandr/net v0.0.0-20230619121241-05e763507259 h1:8NYesyHTt+5UtrU1iehSCBhpEVHSS5F50S28k+kwWZ0=
+github.com/AndrienkoAleksandr/net v0.0.0-20230619121241-05e763507259/go.mod h1:9gsrO9mJLBdC0MHoRJlotoBRBbfatuyHGhIikdn/yIA=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/golang/glog v1.1.0 h1:/d3pCKDPWNnvIWe0vVUpNP32qc8U3PDVxySP/y360qE=
 github.com/golang/glog v1.1.0/go.mod h1:pfYeQZ3JWZoXTV5sFc986z3HTpwQs9At6P4ImfuP3NQ=
