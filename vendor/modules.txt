@@ -39,7 +39,7 @@ github.com/grpc-ecosystem/grpc-gateway/v2/utilities
 ## explicit
 # github.com/rogpeppe/go-internal v1.10.0
 ## explicit; go 1.19
-# golang.org/x/net v0.10.0 => github.com/AndrienkoAleksandr/net v0.0.0-20230619121241-05e763507259
+# golang.org/x/net v0.10.0 => github.com/AndrienkoAleksandr/net v0.0.0-20230619125835-f839f196ba9a
 ## explicit; go 1.17
 golang.org/x/net/http2
 golang.org/x/net/http2/hpack
@@ -176,4 +176,4 @@ google.golang.org/protobuf/types/pluginpb
 # gopkg.in/yaml.v3 v3.0.1
 ## explicit
 gopkg.in/yaml.v3
-# golang.org/x/net => github.com/AndrienkoAleksandr/net v0.0.0-20230619121241-05e763507259
+# golang.org/x/net => github.com/AndrienkoAleksandr/net v0.0.0-20230619125835-f839f196ba9a

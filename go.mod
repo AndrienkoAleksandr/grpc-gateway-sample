@@ -24,4 +24,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace golang.org/x/net => github.com/AndrienkoAleksandr/net v0.0.0-20230619121241-05e763507259
+replace golang.org/x/net => github.com/AndrienkoAleksandr/net v0.0.0-20230619125835-f839f196ba9a
