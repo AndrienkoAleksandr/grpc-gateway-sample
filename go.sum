@@ -1,7 +1,3 @@
-github.com/AndrienkoAleksandr/net v0.0.0-20230619112913-18063360ee2d h1:UCjBgIR5mLINiZ7BoqlazSmaJjqD2KLU4RN7Y/NgJqw=
-github.com/AndrienkoAleksandr/net v0.0.0-20230619112913-18063360ee2d/go.mod h1:9gsrO9mJLBdC0MHoRJlotoBRBbfatuyHGhIikdn/yIA=
-github.com/AndrienkoAleksandr/net v0.0.0-20230619125835-f839f196ba9a h1:Ef3eADvOCe3MIwzvbDzMmqpFS817MNZXPodILACU1xA=
-github.com/AndrienkoAleksandr/net v0.0.0-20230619125835-f839f196ba9a/go.mod h1:VNv5i4w96e3tA3Jl+rHTzvVPwmTSrjMx2TXztmhnUu0=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/golang/glog v1.1.0 h1:/d3pCKDPWNnvIWe0vVUpNP32qc8U3PDVxySP/y360qE=
 github.com/golang/glog v1.1.0/go.mod h1:pfYeQZ3JWZoXTV5sFc986z3HTpwQs9At6P4ImfuP3NQ=
@@ -17,6 +13,8 @@ github.com/kr/text v0.2.0 h1:5Nx0Ya0ZqY2ygV366QzturHI13Jq95ApcVaJBhpS+AY=
 github.com/kr/text v0.2.0/go.mod h1:eLer722TekiGuMkidMxC/pM04lWEeraHUUmBw8l2grE=
 github.com/rogpeppe/go-internal v1.10.0 h1:TMyTOH3F/DB16zRVcYyreMH6GnZZrwQVAoYjRBZyWFQ=
 github.com/rogpeppe/go-internal v1.10.0/go.mod h1:UQnix2H7Ngw/k4C5ijL5+65zddjncjaFoBhdsK/akog=
+golang.org/x/net v0.11.0 h1:Gi2tvZIJyBtO9SDr1q9h5hEQCp/4L2RQ+ar0qjx2oNU=
+golang.org/x/net v0.11.0/go.mod h1:2L/ixqYpgIVXmeoSA/4Lu7BzTG4KIyPIryS4IsOd1oQ=
 golang.org/x/sys v0.9.0 h1:KS/R3tvhPqvJvwcKfnBHJwwthS11LRhmM5D59eEXa0s=
 golang.org/x/sys v0.9.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/text v0.10.0 h1:UpjohKhiEgNc0CSauXmwYftY1+LlaC75SJwh0SgCX58=

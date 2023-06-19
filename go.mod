@@ -11,11 +11,10 @@ require (
 )
 
 require (
-	github.com/AndrienkoAleksandr/net v0.0.0-20230619112913-18063360ee2d // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.10.0 // indirect
-	golang.org/x/net v0.10.0 // indirect
+	golang.org/x/net v0.11.0 // indirect
 	golang.org/x/sys v0.9.0 // indirect
 	golang.org/x/text v0.10.0 // indirect
 	google.golang.org/genproto v0.0.0-20230526203410-71b5a4ffd15e // indirect
@@ -24,4 +23,9 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace golang.org/x/net => github.com/AndrienkoAleksandr/net v0.0.0-20230619125835-f839f196ba9a
+// replace golang.org/x/net => github.com/AndrienkoAleksandr/net v0.10.1
+exclude golang.org/x/net v0.7.0
+exclude golang.org/x/net v0.8.0
+exclude golang.org/x/net v0.9.0
+exclude golang.org/x/net v0.10.0
+

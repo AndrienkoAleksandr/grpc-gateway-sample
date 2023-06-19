@@ -1,9 +1,3 @@
-# github.com/AndrienkoAleksandr/net v0.0.0-20230619112913-18063360ee2d
-## explicit; go 1.17
-github.com/AndrienkoAleksandr/net/http/httpguts
-github.com/AndrienkoAleksandr/net/http2/hpack
-github.com/AndrienkoAleksandr/net/idna
-github.com/AndrienkoAleksandr/net/internal/timeseries
 # github.com/golang/glog v1.1.0
 ## explicit; go 1.18
 github.com/golang/glog
@@ -39,11 +33,13 @@ github.com/grpc-ecosystem/grpc-gateway/v2/utilities
 ## explicit
 # github.com/rogpeppe/go-internal v1.10.0
 ## explicit; go 1.19
-# golang.org/x/net v0.10.0 => github.com/AndrienkoAleksandr/net v0.0.0-20230619125835-f839f196ba9a
+# golang.org/x/net v0.11.0
 ## explicit; go 1.17
+golang.org/x/net/http/httpguts
 golang.org/x/net/http2
 golang.org/x/net/http2/hpack
 golang.org/x/net/idna
+golang.org/x/net/internal/timeseries
 golang.org/x/net/trace
 # golang.org/x/sys v0.9.0
 ## explicit; go 1.17
@@ -176,4 +172,3 @@ google.golang.org/protobuf/types/pluginpb
 # gopkg.in/yaml.v3 v3.0.1
 ## explicit
 gopkg.in/yaml.v3
-# golang.org/x/net => github.com/AndrienkoAleksandr/net v0.0.0-20230619125835-f839f196ba9a
