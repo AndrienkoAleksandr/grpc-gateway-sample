@@ -28,7 +28,7 @@ func main() {
 
 	// Create a new HTTP server with TLS configuration
 	server := &http.Server{
-		Addr:      ":443",     // Listen on port 443 (HTTPS default)
+		Addr:      ":3001",     // Listen on port 3001 (HTTPS default)
 		Handler:   mux,        // Set the ServeMux as the server's handler
 		TLSConfig: tlsConfig,  // Set the TLS configuration
 	}
