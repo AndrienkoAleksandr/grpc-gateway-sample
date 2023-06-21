@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 	"net"
 	"path"
 
@@ -13,6 +12,7 @@ import (
 	"net/http"
 
 	"github.com/golang/glog"
+	"log"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -48,11 +48,19 @@ func runGateWayProxy(cred credentials.TransportCredentials) error {
 	// Register gRPC server endpoint
 	// Note: Make sure the gRPC server is running properly and accessible
 	mux := runtime.NewServeMux()
-	opts := []grpc.DialOption{grpc.WithTransportCredentials(cred)}
-	fmt.Println("Gateway proxy will connect to: " + *grpcServerEndpoint)
-	err := pb.RegisterYourServiceHandlerFromEndpoint(ctx, mux,  *grpcServerEndpoint, opts)
+	// opts := []grpc.DialOption{grpc.WithTransportCredentials(cred)}
+	// fmt.Println("Gateway proxy will connect to: " + *grpcServerEndpoint)
+	// err := pb.RegisterYourServiceHandlerFromEndpoint(ctx, mux,  *grpcServerEndpoint, opts) //
+	// if err != nil {
+	// 	return err
+	// }
+
+
+	err := mux.HandlePath("GET", "/", func(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+		w.Write([]byte("this is homepage"))
+	})
 	if err != nil {
-		return err
+		panic(err)
 	}
 
 	fmt.Println("Run gRPC gateway...")
