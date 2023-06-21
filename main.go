@@ -43,5 +43,6 @@ func main() {
 
 // Handler function for the root route
 func helloHandler(w http.ResponseWriter, r *http.Request) {
+	log.Println("go on!!!")
 	fmt.Fprintln(w, "Hello, TLS!")
 }
