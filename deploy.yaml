@@ -21,6 +21,9 @@ spec:
           args:
           - -grpc-server-endpoint
           - grpc-gateway-sample-2.oandriie-tenant.svc.cluster.local:50051
+          env:
+          - name: GODEBUG
+            value: http2debug=0
           resources:
             requests:
               memory: "10Mi"
@@ -63,7 +66,7 @@ metadata:
     app.kubernetes.io/part-of: grpc-gateway-sample
   annotations:
     openshift.io/host.generated: "true"
-    # haproxy.router.openshift.io/hsts_header: "max-age=63072000"
+    haproxy.router.openshift.io/hsts_header: "max-age=63072000"
 spec:
   path: /
   to:
@@ -75,7 +78,7 @@ spec:
     targetPort: http-3001
   tls:
     termination: reencrypt
-    # insecureEdgeTerminationPolicy: Redirect
+    insecureEdgeTerminationPolicy: Redirect
   wildcardPolicy: None
 ---
 apiVersion: v1
