@@ -32,6 +32,7 @@ func main() {
 		Handler:   mux,        // Set the ServeMux as the server's handler
 		TLSConfig: tlsConfig,  // Set the TLS configuration
 	}
+	server.TLSNextProto = map[string]func(*http.Server, *tls.Conn, http.Handler){}
 
 	// Start the server with TLS enabled
 	log.Printf("Server listening on https://localhost%s\n", server.Addr)
