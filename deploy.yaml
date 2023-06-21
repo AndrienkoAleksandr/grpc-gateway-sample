@@ -23,7 +23,7 @@ spec:
           - grpc-gateway-sample-2.oandriie-tenant.svc.cluster.local:50051
           env:
           - name: GODEBUG
-            value: http2debug=0
+            value: http2server=0 
           resources:
             requests:
               memory: "10Mi"
