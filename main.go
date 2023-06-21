@@ -63,9 +63,21 @@ func runGateWayProxy(cred credentials.TransportCredentials) error {
 		panic(err)
 	}
 
+
+	http.HandleFunc("/", HelloServer)
+
 	fmt.Println("Run gRPC gateway...")
 	// Start HTTP server (and proxy calls to gRPC server endpoint)
-	return http.ListenAndServeTLS(":3001", path.Join(tlsPath, "tls.crt"), path.Join(tlsPath, "tls.key"), mux)
+	return http.ListenAndServeTLS(":3001", path.Join(tlsPath, "tls.crt"), path.Join(tlsPath, "tls.key"), nil)
+}
+
+func HelloServer(w http.ResponseWriter, r *http.Request) {
+	path := r.URL.Path[1:]
+	if path != "" {
+		fmt.Fprintf(w, "Hello, %s!", r.URL.Path[1:])
+	} else {
+		fmt.Fprint(w, "Hello World!")
+	}
 }
 
 func runGrpcService(cred credentials.TransportCredentials) {
