@@ -75,7 +75,7 @@ spec:
     targetPort: http-3001
   tls:
     termination: reencrypt
-    insecureEdgeTerminationPolicy: Redirect
+    # insecureEdgeTerminationPolicy: Redirect
   wildcardPolicy: None
 ---
 apiVersion: v1
