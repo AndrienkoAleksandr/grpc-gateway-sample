@@ -77,7 +77,7 @@ spec:
     # tekton-results now supports both REST and gRPC traffic on same port
     targetPort: http-3001
   tls:
-    termination: passthrough
+    termination: reencrypt
     insecureEdgeTerminationPolicy: Redirect
   wildcardPolicy: None
 ---
