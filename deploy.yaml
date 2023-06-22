@@ -21,9 +21,9 @@ spec:
           args:
           - -grpc-server-endpoint
           - grpc-gateway-sample-2.oandriie-tenant.svc.cluster.local:50051
-          env:
-          - name: GODEBUG
-            value: http2server=0 
+          # env:
+          # - name: GODEBUG
+          #   value: http2server=0 
           resources:
             requests:
               memory: "10Mi"
@@ -68,7 +68,7 @@ metadata:
     openshift.io/host.generated: "true"
     haproxy.router.openshift.io/hsts_header: "max-age=63072000"
 spec:
-  path: /
+  # path: /
   to:
     kind: Service
     name: grpc-gateway-sample-2
@@ -77,7 +77,7 @@ spec:
     # tekton-results now supports both REST and gRPC traffic on same port
     targetPort: http-3001
   tls:
-    termination: reencrypt
+    termination: passthrough
     insecureEdgeTerminationPolicy: Redirect
   wildcardPolicy: None
 ---

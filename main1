@@ -1,0 +1,61 @@
+package main
+
+import (
+	"crypto/tls"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"path"
+	"time"
+)
+
+const (
+	tlsPath = "/etc/tls"
+)
+ 
+func main() {
+	server := &http.Server{
+		Addr:         ":3001",
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		TLSConfig:    tlsConfig(),
+	}
+ 
+	//// Having this does not change anything but just showing.
+	//// go get -u golang.org/x/net/http2
+	//if err := http2.ConfigureServer(server, nil); err != nil {
+	//	log.Fatal(err)
+	//}
+ 
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("%d", r.ProtoMajor)
+		w.Write([]byte(fmt.Sprintf("Protocol: %s", r.Proto)))
+	})
+ 
+	if err := server.ListenAndServeTLS("", ""); err != nil {
+		log.Fatal(err)
+	}
+}
+ 
+func tlsConfig() *tls.Config {
+	crt, err := ioutil.ReadFile(path.Join(tlsPath, "tls.crt"))
+	if err != nil {
+		log.Fatal(err)
+	}
+ 
+	key, err := ioutil.ReadFile(path.Join(tlsPath, "tls.key"))
+	if err != nil {
+		log.Fatal(err)
+	}
+ 
+	cert, err := tls.X509KeyPair(crt, key)
+	if err != nil {
+		log.Fatal(err)
+	}
+ 
+	return &tls.Config{
+		Certificates: []tls.Certificate{cert},
+		ServerName:   "localhost",
+	}
+}
